@@ -1,4 +1,4 @@
-<table>
+<table border=0>
   <tbody>
     <tr>
       <td><img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" width="250" height="156" alt="Ansible Logo" /> </td>
