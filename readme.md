@@ -4,14 +4,14 @@
 
 This playbook deploying VMware ESXi server installation to multiple HPE Synergy servers at the same time, using Customized Installation and HPE ILO Virtual Media.
 All steps in playbook are: 
-    - Creating kickstart file for customized ESXi installation
-    - Creating custom ESXi install ISO image. Only customization is path to customized kickstart file (USB)
-    - Creating IMG file with kickstart file in it
-    - Creating server profile from profile template in HPE Oneview
-    - Mounting ISO image to HPE ILO Virtual CD and IMG file to HPE ILO Virtual USB
-    - Booting server from attached ISO Image and Waiting for server installation
-    - Unmounting IMG file from Virtual USB (ISO Image is unmounted by installer)
-    - Creating DNS records in FreeIPA DNS server
+- Creating kickstart file for customized ESXi installation
+- Creating custom ESXi install ISO image. Only customization is path to customized kickstart file (USB)
+- Creating IMG file with kickstart file in it
+- Creating server profile from profile template in HPE Oneview
+- Mounting ISO image to HPE ILO Virtual CD and IMG file to HPE ILO Virtual USB
+- Booting server from attached ISO Image and Waiting for server installation
+- Unmounting IMG file from Virtual USB (ISO Image is unmounted by installer)
+- Creating DNS records in FreeIPA DNS server
 
 ## Requirements
 
