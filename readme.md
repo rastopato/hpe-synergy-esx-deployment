@@ -2,8 +2,6 @@
 
 # ESXi Deployment to HPE Synergy servers Ansible Playbook
 
-[![CI][badge-gh-actions]][link-gh-actions]
-
 This playbook deploying VMware ESXi server installation to multiple HPE Synergy servers at the same time, using Customized Installation and HPE ILO Virtual Media.
 All steps in playbook are: 
     - Creating kickstart file for customized ESXi installation
