@@ -1,0 +1,6 @@
+ilo_password: xxxxxxxxxxxxxx
+ipa_admin_password: xxxxxxxxxxxxxxxxxx
+esxi_password: xxxxxxxxxxxx
+vcenter_password: xxxxxxxxxxxxxx
+encrypted_root_password: xxxxxxxxxxxxxxxxxxxxxx
+ov_password: xxxxxxxxxxxxxxxxxxxx

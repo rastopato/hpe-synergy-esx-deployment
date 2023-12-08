@@ -1,0 +1,39 @@
+
+web_server_ip: "10.8.0.25"
+web_server_path: "/usr/share/nginx/html/"
+vlan_id: "91"
+net_mask: "255.255.255.0"
+gate_way: "192.168.0.1"
+dns_servers: "10.8.0.15"
+ov_template: "esx_template"
+ov_ip: "192.168.0.10"
+ov_username: "Administrator"
+ov_api_version: "5800"
+dns_server: "mydns.myfqdn.local"
+dns_zone: "myfqdn.local"
+dns_zone_ptr: "0.168.192.in-addr.arpa."
+esxi_servers:
+    - { hostname: "esx01", ip: "192.168.0.150", position: "Frame01, bay 1" }
+    - { hostname: "esx02", ip: "192.168.0.151", position: "Frame01, bay 2" }
+    - { hostname: "esx03", ip: "192.168.0.152", position: "Frame01, bay 3" }
+    - { hostname: "esx04", ip: "192.168.0.153", position: "Frame01, bay 4" }
+    - { hostname: "esx05", ip: "192.168.0.154", position: "Frame01, bay 5" }
+    - { hostname: "esx06", ip: "192.168.0.155", position: "Frame01, bay 6" }
+    - { hostname: "esx07", ip: "192.168.0.156", position: "Frame01, bay 7" }
+    - { hostname: "esx08", ip: "192.168.0.157", position: "Frame01, bay 8" }
+    - { hostname: "esx09", ip: "192.168.0.158", position: "Frame01, bay 9" }
+    - { hostname: "esx10", ip: "192.168.0.159", position: "Frame01, bay 10" }
+    - { hostname: "esx11", ip: "192.168.0.160", position: "Frame01, bay 11" }
+    - { hostname: "esx12", ip: "192.168.0.161", position: "Frame01, bay 12" }
+    - { hostname: "esx13", ip: "192.168.0.162", position: "Frame02, bay 1" }
+    - { hostname: "esx14", ip: "192.168.0.163", position: "Frame02, bay 2" }
+    - { hostname: "esx15", ip: "192.168.0.164", position: "Frame02, bay 3" }
+    - { hostname: "esx16", ip: "192.168.0.165", position: "Frame02, bay 4" }
+    - { hostname: "esx17", ip: "192.168.0.166", position: "Frame02, bay 5" }
+    - { hostname: "esx18", ip: "192.168.0.167", position: "Frame02, bay 6" }
+    - { hostname: "esx19", ip: "192.168.0.168", position: "Frame02, bay 7" }
+    - { hostname: "esx20", ip: "192.168.0.169", position: "Frame02, bay 8" }
+    - { hostname: "esx21", ip: "192.168.0.170", position: "Frame02, bay 9" }
+    - { hostname: "esx22", ip: "192.168.0.171", position: "Frame02, bay 10" }
+    - { hostname: "esx23", ip: "192.168.0.172", position: "Frame02, bay 11" }
+    - { hostname: "esx24", ip: "192.168.0.173", position: "Frame02, bay 12" }
