@@ -147,7 +147,7 @@
    - name: Booting for the first time . . .
      community.general.hpilo_boot:       
        host: "{{ item.ilo }}"
-       login: hpadmin
+       login: "{{ ilo_username }}""
        password: "{{ ilo_password }}"
        media: normal
      delegate_to: localhost
@@ -166,7 +166,7 @@
    - name: Powering off servers . . .
      community.general.hpilo_boot:       
        host: "{{ item.ilo }}"
-       login: hpadmin
+       login: "{{ ilo_username }}"
        password: "{{ ilo_password }}"
        state: poweroff
      delegate_to: localhost
@@ -185,7 +185,7 @@
        category: "Manager"
        command: "VirtualMediaInsert"
        baseuri: "{{ item.ilo }}"
-       username: hpadmin
+       username: "{{ ilo_username }}"
        password: "{{ ilo_password }}"
        timeout: 60
        virtual_media:
@@ -201,7 +201,7 @@
    - name: Booting once using the custom built iso . . .
      community.general.hpilo_boot:       
        host: "{{ item.ilo }}"
-       login: hpadmin
+       login: "{{ ilo_username }}"
        password: "{{ ilo_password }}"
        media: cdrom
        image: http://{{ web_server_ip }}/custom_esx.iso # <- Your webserver url should go here.
@@ -258,7 +258,7 @@
        category: "Manager"
        command: "VirtualMediaEject"
        baseuri: "{{ item.ilo }}"
-       username: hpadmin
+       username: "{{ ilo_username }}"
        password: "{{ ilo_password }}"
        timeout: 60
        virtual_media:
