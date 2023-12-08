@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/geerlingguy/mac-dev-playbook/master/files/Mac-Dev-Playbook-Logo.png" width="250" height="156" alt="Mac Dev Playbook Logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" width="250" height="156" alt="Ansible Logo" />
 
 # ESXi Deployment to HPE Synergy servers Ansible Playbook
 
