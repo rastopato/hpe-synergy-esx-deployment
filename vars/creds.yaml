@@ -1,6 +1,6 @@
-ilo_password: xxxxxxxxxxxxxx
-ipa_admin_password: xxxxxxxxxxxxxxxxxx
-esxi_password: xxxxxxxxxxxx
-vcenter_password: xxxxxxxxxxxxxx
-encrypted_root_password: xxxxxxxxxxxxxxxxxxxxxx
-ov_password: xxxxxxxxxxxxxxxxxxxx
+ilo_password: ""
+ipa_admin_password: ""
+esxi_password: ""
+vcenter_password: ""
+encrypted_root_password: ""
+ov_password: ""
