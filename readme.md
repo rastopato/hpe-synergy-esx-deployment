@@ -1,4 +1,5 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" width="250" height="156" alt="Ansible Logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Hewlett_Packard_Enterprise_logo.svg" width="250" height="156" alt="Ansible Logo" />
 
 # ESXi Deployment to HPE Synergy servers Ansible Playbook
 
