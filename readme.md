@@ -1,6 +1,6 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" width="250" height="156" alt="Ansible Logo" />   <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Hewlett_Packard_Enterprise_logo.svg" width="250" height="156" alt="HPE Logo" />              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Vmware.svg" width="250" height="156" alt="VMware Logo" />
 
-# ESXi Deployment to HPE Synergy servers Ansible Playbook
+# Ansible Playbook for ESXi Deployment on HPE Synergy servers
 
 This playbook deploying VMware ESXi server installation to multiple HPE Synergy servers at the same time, using Customized Installation and HPE ILO Virtual Media.
 All steps in playbook are: 
