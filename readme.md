@@ -1,4 +1,4 @@
-<img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" width="250" height="156" alt="Ansible Logo" />   <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Hewlett_Packard_Enterprise_logo.svg" width="250" height="156" alt="HPE Logo" />   fsdfadsf     <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Vmware.svg" width="250" height="156" alt="VMware Logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg" width="250" height="156" alt="Ansible Logo" />   <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Hewlett_Packard_Enterprise_logo.svg" width="250" height="156" alt="HPE Logo" />                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Vmware.svg" width="250" height="156" alt="VMware Logo" />
 
 # Ansible Playbook for ESXi Deployment on HPE Synergy servers
 
