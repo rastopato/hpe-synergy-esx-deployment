@@ -1,34 +1,41 @@
 ---
-- hosts: localhost
+- hosts: ba_pod1
+  connection: local
   gather_facts: false
   become: no
-  vars_files:
-    - vars/creds.yaml
-    - vars/vars.yaml
   vars:
     ansible_python_interpreter: /usr/bin/python3
     ansible_host_key_checking: false
     validate_certs: false
-    esxi_build: "20036589"  #manually create directory with this build number
+    # esxi_build: "21203435" #8.0.0c ACS
+    # esxi_build: "22380479" #8.0.2
+    esxi_build: "20036589" #7.0.3
 
   collections:
     - hpe.oneview
 
   tasks:
 
+# Unpack ESXi ISO Image to image directory....
+# Create and update and copy BOOT.cfg to files/{{ esxi_build }}/EFI/BOOT/BOOT.CFG
+
 # Create directory for each baremetal server to install to put Kickstart to it...
+
    - name: . . . Create directory for kickstart files . . .
-     shell: |
-       mkdir kickstarts/{{ item.hostname }}
-     loop: "{{ esxi_servers }}"      
+     ansible.builtin.file:
+       path: kickstarts/{{ item.hostname }}
+       state: directory
+     delegate_to: localhost          
+     loop: "{{ esxi_servers }}"   
      loop_control:
-       label: "Kickstart file for {{ item.hostname }} created ..."   
+       label: "Directory for {{ item.hostname }} created ..."  
 
 # Copy customized BOOT.CFG to upacked ISO directory..
    - name: Copying custom UEFI boot.cfg to root efi directory . . .
      copy:
        src: files/{{ esxi_build }}/EFI/BOOT/BOOT.CFG
        dest: image/EFI/BOOT/BOOT.CFG
+     delegate_to: localhost       
 
 # Create kickstart file for each baremetal server
    - name: Creating kickstart file with proper automation contents . . .
@@ -41,21 +48,18 @@
          install --firstdisk=local --overwritevmfs
          rootpw --iscrypted {{ encrypted_root_password }}
          keyboard 'US Default'
-         network --bootproto=static --addvmportgroup=0 --vlanid={{ vlan_id }} --ip={{ item.ip }} --netmask={{ net_mask }} --gateway={{ gate_way }} --nameserver={{ dns_servers }} --hostname={{ item.hostname }}.{{ dns_zone }} --device=vmnic0
+         network --bootproto=static --addvmportgroup=0 --vlanid={{ vlan_id }} --ip={{ item.ip }} --netmask={{ net_mask }} --gateway={{ gate_way }} --nameserver={{ dns_servers }} --hostname={{ item.hostname }}.infra.rpc.datacentrum.sk --device=vmnic0
          reboot 
 
          %firstboot --interpreter=busybox
          esxcli network vswitch standard uplink add --uplink-name=vmnic1 --vswitch-name=vSwitch0
          sut /set mode=AutoDeploy
-         vim-cmd hostsvc/enable_ssh
-         vim-cmd hostsvc/start_ssh
-         vim-cmd hostsvc/enable_esx_shell
-         vim-cmd hostsvc/start_esx_shell
-     loop: "{{ esxi_servers }}"       
+     delegate_to: localhost  
+     loop: "{{ esxi_servers }}"    
      loop_control:
        label: "Kickstart file for {{ item.hostname }} created ..."      
 
-# Create custom bootable ISO file for installing ESXi server
+# Create custom bootable ISO file for installing ESXi servers, with path to kickstart file
    - name: Creating bootable iso from all files . . .
      shell: >
        mkisofs
@@ -72,12 +76,14 @@
        -b EFIBOOT.IMG
        -no-emul-boot
        image/
+     delegate_to: localhost          
 
 # Create image file with kickstart file to connect to USB for each baremetal server and move to web server path
    - name: Creating img file with kickstart . . .
      shell: |
        ./dir2img.sh {{ item.hostname }}.img 32 kickstarts/{{ item.hostname }}
        mv {{ item.hostname }}.img {{ web_server_path }}
+     delegate_to: localhost          
      loop: "{{ esxi_servers }}"
      loop_control:
        label: "Kickstart image for {{ item.hostname }} created ..."      
@@ -86,6 +92,7 @@
    - name: Moving created iso to webserver . . .
      shell: |
        mv custom_esx.iso {{ web_server_path }} 
+     delegate_to: localhost          
 
 # Create Oneview profile for each baremetal server from template
    - name: Create Server Profile from Template
@@ -99,14 +106,14 @@
          serverProfileTemplateName: "{{ ov_template }}"
          name: "{{ item.hostname }}"
          serverHardwareName: "{{ item.position }}"
-       params: # Supported only in API version >= 600
+       params: 
          force: true
      delegate_to: localhost
      loop: "{{ esxi_servers }}"
      loop_control:
        label: "Profile {{ item.hostname }} created and assigned to {{ item.position }}"
 
- # Getting info about all HW in Oneview in order to get ILO IP addresses and put it into ilo_ips fact
+ # Getting info about all HW in Oneview in order to get ILO IP addresses
    - name: Gathering ILO IP Addresses
      oneview_server_hardware_facts:
        hostname: "{{ ov_ip }}"
@@ -119,9 +126,13 @@
      loop: "{{ esxi_servers }}"
      loop_control:
        label: "Info about {{ item.hostname }} gathered ..."   
-
-# Extract only ILO IP addresses from ilo_ips fact and put in into result fact
+     tags:
+        - iloip
+    
    - set_fact: result="{{ ilo_ips.results | map(attribute='ansible_facts.server_hardwares.mpHostInfo.mpIpAddresses') | regex_findall('(?<!\\d)(?:\\d{1,3}\\.){3}\\d{1,3}(?!\\d)') }}"
+     delegate_to: localhost      
+     tags:
+        - iloip
 
 # Adding ILO IP Addresses to the initial list of esx servers
    - name: Adding ILO addresses to esx servers list
@@ -137,17 +148,20 @@
              }
            ]
         }}"
+     delegate_to: localhost           
      with_together:
        - "{{ esxi_servers }}"
        - "{{ result }}"
      loop_control:
        label: "{{ item.0.hostname }} has ILO IP {{ item.1 }}..."   
+     tags:
+        - iloip
 
 # Booting baremetal servers for the first time to apply profiles correctly...
    - name: Booting for the first time . . .
      community.general.hpilo_boot:       
        host: "{{ item.ilo }}"
-       login: "{{ ilo_username }}""
+       login: hpadmin
        password: "{{ ilo_password }}"
        media: normal
      delegate_to: localhost
@@ -166,7 +180,7 @@
    - name: Powering off servers . . .
      community.general.hpilo_boot:       
        host: "{{ item.ilo }}"
-       login: "{{ ilo_username }}"
+       login: hpadmin
        password: "{{ ilo_password }}"
        state: poweroff
      delegate_to: localhost
@@ -185,7 +199,7 @@
        category: "Manager"
        command: "VirtualMediaInsert"
        baseuri: "{{ item.ilo }}"
-       username: "{{ ilo_username }}"
+       username: hpadmin
        password: "{{ ilo_password }}"
        timeout: 60
        virtual_media:
@@ -201,7 +215,7 @@
    - name: Booting once using the custom built iso . . .
      community.general.hpilo_boot:       
        host: "{{ item.ilo }}"
-       login: "{{ ilo_username }}"
+       login: hpadmin
        password: "{{ ilo_password }}"
        media: cdrom
        image: http://{{ web_server_ip }}/custom_esx.iso # <- Your webserver url should go here.
@@ -213,7 +227,7 @@
 
    - name: Creating A DNS Record for host ...
      community.general.ipa_dnsrecord:
-             ipa_host: "{{ dns_server }}"
+             ipa_host: "{{ ipa_host }}"
              ipa_pass: "{{ ipa_admin_password }}"
              ipa_user: admin
              record_name: "{{ item.hostname }}"
@@ -226,10 +240,12 @@
      loop: "{{ esxi_servers }}"
      loop_control:
        label: "DNS Record A {{ item.hostname }} created ..."
+     tags:
+        - createdns
 
    - name: Creating PTR Records for host
      community.general.ipa_dnsrecord:
-       ipa_host: "{{ dns_server }}"
+       ipa_host: "{{ ipa_host }}"
        ipa_pass: "{{ ipa_admin_password }}"
        ipa_user: admin
        record_name: "{{ item.ip | split('.') | last }}"
@@ -241,37 +257,39 @@
      loop: "{{ esxi_servers }}"
      loop_control:
        label: "DNS Record PTR {{ item.hostname }} created ..."
- 
-   - name: Waiting for custom installation to complete . . .
-     wait_for: 
-       delay: 180
-       sleep: 3
-       host: "{{ item.ip }}"
-     register: running
-     delegate_to: localhost
-     loop: "{{ esxi_servers }}"
-     loop_control:
-       label: "{{ item.hostname }} started and available ..."  
+     tags:
+        - createdns
 
+   - name: Waiting 10 minutes for custom installation to complete . . .
+     ansible.builtin.wait_for:
+       timeout: 900
+     delegate_to: localhost
+ 
    - name: Eject USB with kickstart file. . .
      community.general.redfish_command:       
        category: "Manager"
        command: "VirtualMediaEject"
        baseuri: "{{ item.ilo }}"
-       username: "{{ ilo_username }}"
+       username: hpadmin
        password: "{{ ilo_password }}"
        timeout: 60
        virtual_media:
          image_url: "http://{{ web_server_ip }}/{{ item.hostname }}.img"
+     delegate_to: localhost            
      loop: "{{ esxi_servers_final }}"
      loop_control:
        pause: 5
        label: "Kickstart for {{ item.hostname }} mounted to USB: ..."  
+     tags:
+        - ejectusb
 
    - name: Deleting all related files from staging location and web server . . .
      shell: |
        rm -rf kickstarts/{{ item.hostname }}
        rm {{ web_server_path }}{{ item.hostname }}.img
+     delegate_to: localhost          
      loop: "{{ esxi_servers }}"
      loop_control:
        label: "{{ item.hostname }} ISO Image deleted ..."  
+     tags:
+         - cleanup
