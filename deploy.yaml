@@ -1,5 +1,5 @@
 ---
-- hosts: ba_pod1
+- hosts: ba_synergy
   connection: local
   gather_facts: false
   become: no
