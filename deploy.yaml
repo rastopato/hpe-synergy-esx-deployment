@@ -48,7 +48,7 @@
          install --firstdisk=local --overwritevmfs
          rootpw --iscrypted {{ encrypted_root_password }}
          keyboard 'US Default'
-         network --bootproto=static --addvmportgroup=0 --vlanid={{ vlan_id }} --ip={{ item.ip }} --netmask={{ net_mask }} --gateway={{ gate_way }} --nameserver={{ dns_servers }} --hostname={{ item.hostname }}.infra.rpc.datacentrum.sk --device=vmnic0
+         network --bootproto=static --addvmportgroup=0 --vlanid={{ vlan_id }} --ip={{ item.ip }} --netmask={{ net_mask }} --gateway={{ gate_way }} --nameserver={{ dns_servers }} --hostname={{ item.hostname }}.{{ dns_zone }} --device=vmnic0
          reboot 
 
          %firstboot --interpreter=busybox
