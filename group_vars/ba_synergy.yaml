@@ -1,0 +1,53 @@
+ov_ip: "192.168.100.20"
+ov_template: "esx_template"
+dns_zone_ptr: "100.168.192.in-addr.arpa."
+net_mask: "255.255.255.0"
+gate_way: "192.168.100.1"
+vlan_id: "91"
+web_server_ip: "192.168.105.5"
+web_server_path: "/usr/share/nginx/html/"
+dns_servers: "192.168.105.10"
+ov_username: "Administrator"
+ov_api_version: "5800"
+ipa_host: "192.168.110.10"
+dns_zone: "mydomain.com" 
+ilo_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          .........................
+ipa_admin_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          .......................
+esxi_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          .......................
+encrypted_root_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          .......................
+ov_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          ......................
+esxi_servers:
+ - { hostname: "exp010101a", ip: "192.168.100.0", ilo: "", position: "Frame01, bay 1" }
+ - { hostname: "exp010102a", ip: "192.168.100.1", ilo: "", position: "Frame01, bay 2" }
+ - { hostname: "exp010103a", ip: "192.168.100.2", ilo: "", position: "Frame01, bay 3" }
+ - { hostname: "exp010104a", ip: "192.168.100.3", ilo: "", position: "Frame01, bay 4" }
+ - { hostname: "exp010105a", ip: "192.168.100.4", ilo: "", position: "Frame01, bay 5" }
+ - { hostname: "exp010106a", ip: "192.168.100.5", ilo: "", position: "Frame01, bay 6" }
+ - { hostname: "exp010107a", ip: "192.168.100.6", ilo: "", position: "Frame01, bay 7" }
+ - { hostname: "exp010108a", ip: "192.168.100.7", ilo: "", position: "Frame01, bay 8" }
+ - { hostname: "exp010109a", ip: "192.168.100.8", ilo: "", position: "Frame01, bay 9" }
+ - { hostname: "exp010110a", ip: "192.168.100.9", ilo: "", position: "Frame01, bay 10" }
+ - { hostname: "exp010111a", ip: "192.168.100.10", ilo: "", position: "Frame01, bay 11" }
+ - { hostname: "exp010112a", ip: "192.168.100.11", ilo: "", position: "Frame01, bay 12" }
+ - { hostname: "exp010201a", ip: "192.168.100.12", ilo: "", position: "Frame02, bay 1" }
+ - { hostname: "exp010202a", ip: "192.168.100.13", ilo: "", position: "Frame02, bay 2" }
+ - { hostname: "exp010203a", ip: "192.168.100.14", ilo: "", position: "Frame02, bay 3" }
+ - { hostname: "exp010204a", ip: "192.168.100.15", ilo: "", position: "Frame02, bay 4" }
+ - { hostname: "exp010205a", ip: "192.168.100.16", ilo: "", position: "Frame02, bay 5" }
+ - { hostname: "exp010206a", ip: "192.168.100.17", ilo: "", position: "Frame02, bay 6" }
+ - { hostname: "exp010207a", ip: "192.168.100.18", ilo: "", position: "Frame02, bay 7" }
+ - { hostname: "exp010208a", ip: "192.168.100.19", ilo: "", position: "Frame02, bay 8" }
+ - { hostname: "exp010209a", ip: "192.168.100.20", ilo: "", position: "Frame02, bay 9" }
+ - { hostname: "exp010210a", ip: "192.168.100.21", ilo: "", position: "Frame02, bay 10" }
+ - { hostname: "exp010211a", ip: "192.168.100.22", ilo: "", position: "Frame02, bay 11" }
+ - { hostname: "exp010212a", ip: "192.168.100.23", ilo: "", position: "Frame02, bay 12" }
